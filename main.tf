@@ -6,6 +6,15 @@
 terraform {
   required_version = ">=1.1.0" 
 
+ backend "s3" {
+    bucket         = "prod-nfor" # s3 bucket 
+    key            = "path/env/kojitechs-ci-cd-demo-infra-pipeline-tf"
+    region         = "us-east-1"
+    # dynamodb_table = "terraform-lock"
+    # encrypt        = "true"
+  }
+
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -61,7 +70,7 @@ resource "aws_instance" "jenkins-server" {
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
   iam_instance_profile = aws_iam_instance_profile.instance_profile.name
 
-  user_data = file("${path.module}/template/jenkins.sh")
+  user_data = file("${path.module}/templates/jenkins.sh")
 
   tags = {
     Name = "jenkins-server"
@@ -73,7 +82,8 @@ resource "aws_instance" "sonarqube-server" {
   instance_type ="t3.large"
   subnet_id = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.sonarqube_sg.id]
-   user_data = file("${path.module}/template/sonarqube.sh") 
+  iam_instance_profile = aws_iam_instance_profile.instance_profile.name
+   user_data = file("${path.module}/templates/sonarqube.sh") 
 
   tags = {
     Name = "sonarqube-server"
@@ -101,5 +111,15 @@ module "vpc" {
   tags = {
     Terraform = "true"
     Environment = "dev"
+  }
+}
+
+
+resource "aws_ecr_repository" "this" {
+  name                 = "${var.component_name}"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
   }
 }
