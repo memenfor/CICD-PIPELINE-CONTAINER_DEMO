@@ -2,6 +2,8 @@
 #!/bin/bash
 # Installing JAVA && Jenkins 
 sudo yum update –y
+sudo yum install java-11-amazon-corretto-headless -y 
+sudo yum remove java-17-amazon-corretto-headless -y
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 sudo yum upgrade
@@ -41,7 +43,7 @@ tar -xvzf apache-maven-3.0.5-bin.tar.gz
 # echo  "JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.amzn2.M2_HOME=/opt/maven/apache-maven-3.8.4 M2=$M2_HOME/bin PATH=$PATH:$HOME/bin:$M2_HOME:$M2:$JAVA_HOME" > file10.1.x86_64  
 # cat >> ~/.bash_profile 
 # JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.302.b08-0.amzn2.0.1.x86_64
-# M2_HOME=/opt/maven/apache-maven-3.8.7/bin
+# M2_HOME=/opt/maven/apache-maven-3.0.5/bin
 # M2=$M2_HOME/bin
 # PATH=$PATH:$HOME/bin:$M2_HOME:$M2:$JAVA_HOME
 #  export PATH
