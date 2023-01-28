@@ -16,7 +16,7 @@ Go to `manage jenkins`, `manage plugins`
 ```
 vi ~/.bash_profile
 
-M2_HOME=/opt/maven/apache-maven-3.8.7/bin
+M2_HOME=/opt/maven/apache-maven-3.0.5/bin
 PATH=$PATH:$HOME/bin:$M2_HOME
 export PATH
 ```

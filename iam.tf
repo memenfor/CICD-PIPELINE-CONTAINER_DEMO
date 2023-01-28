@@ -1,7 +1,8 @@
 
 #IAM Service role.
+# "arn:aws:iam::735972722491:role/CI-CD-DEMO-NODEGROUP-ROLE"
 resource "aws_iam_role" "eks_nodegroup_role" {
-  name = upper(format("%s_%s", var.component_name, "nodegroup_role"))
+  name = upper(format("%s-%s", var.component_name, "nodegroup-role"))
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -10,7 +11,7 @@ resource "aws_iam_role" "eks_nodegroup_role" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          Service = "ec2.amazonaws.com" # 
+          Service = "ec2.amazonaws.com"
         }
       },
     ]
@@ -18,7 +19,7 @@ resource "aws_iam_role" "eks_nodegroup_role" {
 }
 
 resource "aws_iam_instance_profile" "instance_profile" {
-  name = format("%s_%s", var.component_name, "instance_profile")
+  name = format("%s-%s", var.component_name, "instance-profile")
   role = aws_iam_role.eks_nodegroup_role.name
 }
 
@@ -39,7 +40,7 @@ resource "aws_iam_role_policy_attachment" "eks-AmazonEC2ContainerRegistryReadOnl
 
 #IAM policy
 resource "aws_iam_policy" "policy" {
-  name        = format("%s_%s", var.component_name, "fleet_managerpolicy")
+  name        = format("%s-%s", var.component_name, "fleet-managerpolicy")
   description = "Access  policy of ec2 to ssm fleet"
   policy      = <<EOF
 {
